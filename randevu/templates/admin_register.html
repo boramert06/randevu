@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Kayıt Ol</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f4ff; display: flex; justify-content: center; align-items: center; height: 100vh;}
+        .register-box { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 16px #bbb; min-width: 320px;}
+        .register-box h2 { text-align: center; }
+        .register-box input { width: 100%; margin-bottom: 1rem; padding: 0.5rem; border-radius: 6px; border: 1px solid #ccc;}
+        .register-box button { width: 100%; padding: 0.7rem; background: #66a6ff; color: white; border: none; border-radius: 6px; font-size: 1rem;}
+        .register-box button:hover { background: #89f7fe; color: #333;}
+        .mesaj { color: red; text-align: center; margin-bottom: 1rem;}
+        .login-link { text-align: center; margin-top: 1rem;}
+    </style>
+</head>
+<body>
+    <div class="register-box">
+        <h2>Admin Kayıt Ol</h2>
+        {% if mesaj %}
+            <div class="mesaj">{{ mesaj }}</div>
+        {% endif %}
+        <form method="post">
+            <input type="email" name="email" placeholder="Admin E-posta" required>
+            <input type="password" name="password" placeholder="Şifre" required>
+            <button type="submit">Kayıt Ol</button>
+        </form>
+        <div class="login-link">
+            <a href="{{ url_for('admin_login') }}">Zaten admin hesabınız var mı? Giriş Yapın</a>
+        </div>
+    </div>
+</body>
+</html>

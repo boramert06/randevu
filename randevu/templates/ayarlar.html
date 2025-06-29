@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ayarlar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4ff;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            margin: 3rem auto;
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+            max-width: 500px;
+        }
+        h2 { text-align: center; color: #222; margin-bottom: 1.5rem; }
+        form { display: flex; flex-direction: column; gap: 1rem; }
+        input[type="text"], input[type="password"], input[type="email"] {
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: 1px solid #bdbdbd;
+            font-size: 1rem;
+        }
+        button {
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: none;
+            background: #66a6ff;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        button:hover {
+            background: #89f7fe;
+            color: #222;
+        }
+        .mesaj {
+            margin-bottom: 1rem;
+            color: #007900;
+            text-align: center;
+        }
+        /* Drawer Menu Styles */
+        .drawer {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #222;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+        .drawer a {
+            padding: 12px 24px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #fff;
+            display: block;
+            transition: 0.2s;
+        }
+        .drawer a:hover {
+            background: #66a6ff;
+            color: #222;
+        }
+        .drawer .closebtn {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+        }
+        .menu-btn {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            z-index: 1100;
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 98vw; padding: 1rem 0.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Drawer Menu Button -->
+    <button class="menu-btn" onclick="openDrawer()">&#9776;</button>
+    <!-- Drawer Menu -->
+    <div id="drawer" class="drawer">
+        <span class="closebtn" onclick="closeDrawer()">&times;</span>
+        <a href="{{ url_for('home') }}">Ana Sayfa</a>
+        <a href="{{ url_for('randevularim') }}">Randevularım</a>
+        <a href="{{ url_for('hizmetler') }}">Hizmetler</a>
+        <a href="{{ url_for('personeller') }}">Personeller</a>
+        <a href="{{ url_for('degerlendirme') }}">Değerlendirme</a>
+        <a href="{{ url_for('ayarlar') }}">Ayarlar</a>
+        <a href="{{ url_for('logout') }}">Çıkış</a>
+    </div>
+    <div class="container">
+        <h2>Ayarlar</h2>
+        {% if mesaj %}
+            <div class="mesaj">{{ mesaj }}</div>
+        {% endif %}
+        <form method="post">
+            <label>Ad Soyad Değiştir</label>
+            <input type="text" name="fullname" placeholder="Yeni Ad Soyad" required>
+            <button type="submit" name="action" value="fullname">Güncelle</button>
+        </form>
+        <form method="post">
+            <label>Mail Adresi Değiştir</label>
+            <input type="email" name="new_email" placeholder="Yeni Mail Adresi" required>
+            <button type="submit" name="action" value="email">Maili Güncelle</button>
+        </form>
+        <form method="post">
+            <label>Şifre Değiştir</label>
+            <input type="password" name="old_password" placeholder="Eski Şifre" required>
+            <input type="password" name="new_password" placeholder="Yeni Şifre" required>
+            <button type="submit" name="action" value="password">Şifreyi Güncelle</button>
+        </form>
+        <form method="post" onsubmit="return confirm('Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz!');">
+            <label style="color:#a00;">Kullanıcı Hesabını Sil</label>
+            <button type="submit" name="action" value="delete" style="background:#ff5252;">Hesabı Sil</button>
+        </form>
+    </div>
+    <script>
+        function openDrawer() {
+            document.getElementById("drawer").style.width = "220px";
+        }
+        function closeDrawer() {
+            document.getElementById("drawer").style.width = "0";
+        }
+    </script>
+</body>
+</html>

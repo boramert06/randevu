@@ -1,0 +1,4 @@
+Tarih        | Saat  | İsim            | Soyisim         | Telefon         | Kuaför     | Hizmet          | Email
+--------------------------------------------------------------------------------------------------------------
+2025-07-01   | 10:00 | Bora mert       | Karademir       | 05012020781     | Ayşe       | Saç Kesimi      | boramert95@hotmail.com
+2025-07-02   | 11:00 | Bora            | Karademir       | +90 505 372 95 92 | Fatma      | Saç Kesimi      | boramert95@hotmail.com

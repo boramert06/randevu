@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Paneli</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f4ff; min-height: 100vh; margin: 0; display: flex;}
+        .drawer {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #222;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+        .drawer a {
+            padding: 16px 28px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #fff;
+            display: block;
+            transition: 0.2s;
+        }
+        .drawer a:hover {
+            background: #66a6ff;
+            color: #222;
+        }
+        .drawer .closebtn {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+        }
+        .menu-btn {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            z-index: 1100;
+        }
+        .container {
+            background: #fff;
+            margin: 3rem auto;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 800px;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+            flex: 1;
+        }
+        h2 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1.5rem;}
+        th, td { padding: 0.8rem; border-bottom: 1px solid #e0e7ff; text-align: left;}
+        th { background: #f5f8ff; }
+        .logout-link { display: block; text-align: right; margin-bottom: 1rem; color: #66a6ff; text-decoration: none;}
+        .logout-link:hover { text-decoration: underline; }
+        @media (max-width: 900px) {
+            .container { max-width: 98vw; }
+            .drawer { width: 120px; }
+            .drawer a { font-size: 0.9rem; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1rem 0.2rem; }
+            .drawer { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Drawer Menu Button -->
+    <button class="menu-btn" onclick="openDrawer()">&#9776;</button>
+    <!-- Drawer Menu -->
+    <div id="drawer" class="drawer">
+        <span class="closebtn" onclick="closeDrawer()">&times;</span>
+        <a href="{{ url_for('admin_panel') }}">Randevular</a>
+        <a href="{{ url_for('admin_yorumlar') }}">Yorum Yönetimi</a>
+        <a href="{{ url_for('admin_hizmetler') }}">Hizmetler Yönetimi</a>
+        <a href="{{ url_for('admin_personeller') }}">Personel Yönetimi</a>
+        <a href="{{ url_for('admin_logout') }}">Çıkış Yap</a>
+    </div>
+    <div class="container">
+        <h2>Yeni Randevu Bildirimleri</h2>
+        <a href="{{ url_for('admin_yorumlar') }}" style="display:inline-block;margin-bottom:1rem;color:#66a6ff;">Yorum Yönetimi</a>
+        <table>
+            <tr>
+                <th>Tarih</th>
+                <th>Saat</th>
+                <th>Ad Soyad</th>
+                <th>Telefon</th>
+                <th>Kuaför</th>
+                <th>Hizmet</th>
+                <th>Kullanıcı Mail</th>
+            </tr>
+            {% for r in randevular %}
+            <tr>
+                <td>{{ r.tarih }}</td>
+                <td>{{ r.saat }}</td>
+                <td>{{ r.isim }} {{ r.soyisim }}</td>
+                <td>{{ r.telefon }}</td>
+                <td>{{ r.kuafor }}</td>
+                <td>{{ r.hizmet }}</td>
+                <td>{{ r.email }}</td>
+            </tr>
+            {% endfor %}
+            {% if not randevular %}
+            <tr>
+                <td colspan="7" style="text-align:center;color:#888;">Henüz randevu yok.</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+    <script>
+        function openDrawer() {
+            document.getElementById("drawer").style.width = "220px";
+        }
+        function closeDrawer() {
+            document.getElementById("drawer").style.width = "0";
+        }
+    </script>
+</body>
+</html>
+</html>
+</body>
+</html>

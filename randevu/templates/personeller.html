@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Personeller</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f4ff; min-height: 100vh; }
+        .container { background: #fff; margin: 3rem auto; padding: 2rem; border-radius: 16px; max-width: 600px; box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);}
+        h2 { text-align: center; }
+        .personel { background: #f5f8ff; border-radius: 10px; margin-bottom: 1.2rem; padding: 1.2rem 1.5rem;}
+        .personel h3 { margin: 0 0 0.5rem 0; }
+        .personel .uzmanlik { color: #555; margin-bottom: 0.3rem; }
+        .personel .saat { color: #888; font-size: 0.98rem; }
+        .personel a { color: #66a6ff; text-decoration: none; font-size: 1rem;}
+        .personel a:hover { text-decoration: underline; }
+        /* Drawer Menu Styles */
+        .drawer {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #222;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+        .drawer a {
+            padding: 12px 24px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #fff;
+            display: block;
+            transition: 0.2s;
+        }
+        .drawer a:hover {
+            background: #66a6ff;
+            color: #222;
+        }
+        .drawer .closebtn {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+        }
+        .menu-btn {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            z-index: 1100;
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 98vw; padding: 1rem 0.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Drawer Menu Button -->
+    <button class="menu-btn" onclick="openDrawer()">&#9776;</button>
+    <!-- Drawer Menu -->
+    <div id="drawer" class="drawer">
+        <span class="closebtn" onclick="closeDrawer()">&times;</span>
+        <a href="{{ url_for('home') }}">Ana Sayfa</a>
+        <a href="{{ url_for('randevularim') }}">Randevularım</a>
+        <a href="{{ url_for('hizmetler') }}">Hizmetler</a>
+        <a href="{{ url_for('personeller') }}">Personeller</a>
+        <a href="{{ url_for('degerlendirme') }}">Değerlendirme</a>
+        <a href="{{ url_for('ayarlar') }}">Ayarlar</a>
+        <a href="{{ url_for('logout') }}">Çıkış</a>
+    </div>
+    <div class="container">
+        <h2>Personel Profilleri</h2>
+        {% for p in personeller %}
+        <div class="personel">
+            <h3>{{ p.isim }}</h3>
+            <div class="uzmanlik">Uzmanlık: {{ p.uzmanlik|join(', ') }}</div>
+            <div class="saat">Çalışma Saatleri: {{ p.calisma_saatleri }}</div>
+            {% if p.gunler %}
+            <div class="gunler">Çalışma Günleri: {{ p.gunler|join(', ') }}</div>
+            {% endif %}
+            <a href="{{ url_for('personel_detay', isim=p.isim) }}">Takvimi Görüntüle</a>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        function openDrawer() {
+            document.getElementById("drawer").style.width = "220px";
+        }
+        function closeDrawer() {
+            document.getElementById("drawer").style.width = "0";
+        }
+    </script>
+</body>
+</html>

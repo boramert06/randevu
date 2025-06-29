@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ personel.isim }} - Takvim</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f4ff; }
+        .container { background: #fff; margin: 3rem auto; padding: 2rem; border-radius: 16px; max-width: 500px; box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);}
+        h2 { text-align: center; }
+        .saat { color: #888; text-align: center; margin-bottom: 1rem;}
+        .takvim { margin-top: 1.5rem;}
+        .takvim ul { list-style: none; padding: 0;}
+        .takvim li { background: #f5f8ff; margin-bottom: 0.5rem; padding: 0.7rem 1rem; border-radius: 8px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ personel.isim }} - Takvim</h2>
+        <div class="saat">Çalışma Saatleri: {{ personel.calisma_saatleri }}</div>
+        {% if personel.gunler %}
+        <div class="saat">Çalışma Günleri: {{ personel.gunler|join(', ') }}</div>
+        {% endif %}
+        <div>Uzmanlık: {{ personel.uzmanlik|join(', ') }}</div>
+        <div class="takvim">
+            <h4>Mevcut Randevular</h4>
+            <ul>
+                {% for t in personel.takvim %}
+                <li>{{ t }}</li>
+                {% else %}
+                <li>Henüz randevu yok.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <a href="{{ url_for('personeller') }}" style="display:block;text-align:center;margin-top:1.5rem;color:#66a6ff;">&#8592; Personeller</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Değerlendirme & Yorumlar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4ff;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            margin: 3rem auto;
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+            max-width: 500px;
+        }
+        h2 { text-align: center; color: #222; margin-bottom: 1.5rem; }
+        form { display: flex; flex-direction: column; gap: 1rem; }
+        select, textarea { padding: 0.7rem; border-radius: 8px; border: 1px solid #bdbdbd; font-size: 1rem; }
+        textarea { resize: vertical; min-height: 70px; }
+        .stars { display: flex; flex-direction: row-reverse; justify-content: flex-end; }
+        .stars input[type="radio"] { display: none; }
+        .stars label { font-size: 2rem; color: #ccc; cursor: pointer; transition: color 0.2s; }
+        .stars input[type="radio"]:checked ~ label,
+        .stars label:hover,
+        .stars label:hover ~ label { color: #ffc107; }
+        .yorumlar { margin-top: 2rem; }
+        .yorum { background: #f5f8ff; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+        .yorum .kuafor { font-weight: bold; color: #222; }
+        .yorum .puan { color: #ffc107; font-size: 1.1rem; }
+        .yorum .tarih { color: #888; font-size: 0.95rem; float: right; }
+        .mesaj { margin-bottom: 1rem; color: #007900; text-align: center; }
+        /* Drawer Menu Styles */
+        .drawer {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: #222;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+        .drawer a {
+            padding: 12px 24px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #fff;
+            display: block;
+            transition: 0.2s;
+        }
+        .drawer a:hover {
+            background: #66a6ff;
+            color: #222;
+        }
+        .drawer .closebtn {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+        }
+        .menu-btn {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            z-index: 1100;
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 98vw; padding: 1rem 0.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Drawer Menu Button -->
+    <button class="menu-btn" onclick="openDrawer()">&#9776;</button>
+    <!-- Drawer Menu -->
+    <div id="drawer" class="drawer">
+        <span class="closebtn" onclick="closeDrawer()">&times;</span>
+        <a href="{{ url_for('home') }}">Ana Sayfa</a>
+        <a href="{{ url_for('randevularim') }}">Randevularım</a>
+        <a href="{{ url_for('hizmetler') }}">Hizmetler</a>
+        <a href="{{ url_for('personeller') }}">Personeller</a>
+        <a href="{{ url_for('degerlendirme') }}">Değerlendirme</a>
+        <a href="{{ url_for('ayarlar') }}">Ayarlar</a>
+        <a href="{{ url_for('logout') }}">Çıkış</a>
+    </div>
+    <div class="container">
+        <h2>Değerlendirme & Yorumlar</h2>
+        {% if mesaj %}
+            <div class="mesaj">{{ mesaj }}</div>
+        {% endif %}
+        <form method="post">
+            <label>Kuaför Seçiniz:</label>
+            <select name="kuafor" required>
+                <option value="">Kuaför Seçiniz</option>
+                {% for k in kuaforler %}
+                    <option value="{{ k }}">{{ k }}</option>
+                {% endfor %}
+            </select>
+            <label>Hizmet Puanı:</label>
+            <div class="stars">
+                <input type="radio" id="star5" name="puan" value="5" required><label for="star5">&#9733;</label>
+                <input type="radio" id="star4" name="puan" value="4"><label for="star4">&#9733;</label>
+                <input type="radio" id="star3" name="puan" value="3"><label for="star3">&#9733;</label>
+                <input type="radio" id="star2" name="puan" value="2"><label for="star2">&#9733;</label>
+                <input type="radio" id="star1" name="puan" value="1"><label for="star1">&#9733;</label>
+            </div>
+            <label>Yorumunuz:</label>
+            <textarea name="yorum" maxlength="300" placeholder="Yorumunuzu yazınız..." required></textarea>
+            <input type="submit" value="Gönder">
+        </form>
+        <div class="yorumlar">
+            <h3>Yorumlar</h3>
+            {% for y in yorumlar %}
+            <div class="yorum">
+                <span class="kuafor">Kuaför : {{ y.kuafor }}</span>
+                <span class="puan">{% for i in range(y.puan|int) %}&#9733;{% endfor %}</span>
+                <span class="tarih">{{ y.tarih }}</span>
+                <div style="clear:both"></div>
+                <div>{{ y.yorum }}</div>
+            </div>
+            {% endfor %}
+            {% if not yorumlar %}
+                <div style="color:#888;text-align:center;">Henüz yorum yok.</div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        function openDrawer() {
+            document.getElementById("drawer").style.width = "220px";
+        }
+        function closeDrawer() {
+            document.getElementById("drawer").style.width = "0";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Randevularım</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f0f4ff; 
+            margin: 0; 
+            min-height: 100vh;
+            display: flex;
+        }
+        .drawer {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 100;
+            top: 0;
+            left: 0;
+            background-color: #222;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        .drawer a {
+            padding: 16px 28px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #fff;
+            display: block;
+            transition: 0.2s;
+        }
+        .drawer a:hover {
+            background: #66a6ff;
+            color: #222;
+        }
+        .container { 
+            background: white; 
+            margin: 3rem auto; 
+            padding: 2rem 2.5rem; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18); 
+            max-width: 900px; 
+            flex: 1;
+        }
+        h2 { text-align: center; color: #222; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 1.15rem; }
+        th, td { padding: 1.1rem; text-align: left; border-bottom: 1px solid #e0e7ff; }
+        th { background: #f5f8ff; font-size: 1.18rem; }
+        tr:last-child td { border-bottom: none; }
+        .no-randevu { text-align: center; color: #888; margin-top: 2rem; }
+        .back-link { display: block; margin: 1.5rem auto 0 auto; text-align: center; color: #66a6ff; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .menu-btn {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: #222;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+        }
+        @media (max-width: 900px) {
+            .container { max-width: 98vw; }
+            .drawer { width: 120px; }
+            .drawer a { font-size: 0.9rem; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1rem 0.2rem; }
+            .drawer { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Drawer Menu Button -->
+    <button class="menu-btn" onclick="openDrawer()">&#9776;</button>
+    <!-- Drawer Menu -->
+    <div id="drawer" class="drawer">
+        <span class="closebtn" onclick="closeDrawer()">&times;</span>
+        <a href="{{ url_for('home') }}">Ana Sayfa</a>
+        <a href="{{ url_for('randevularim') }}">Randevularım</a>
+        <a href="{{ url_for('hizmetler') }}">Hizmetler</a>
+        <a href="{{ url_for('personeller') }}">Personeller</a>
+        <a href="{{ url_for('degerlendirme') }}">Değerlendirme</a>
+        <a href="{{ url_for('ayarlar') }}">Ayarlar</a>
+        <a href="{{ url_for('logout') }}">Çıkış</a>
+    </div>
+    <div class="container">
+        <h2>Randevularım</h2>
+        {% if randevular %}
+        <table>
+            <tr>
+                <th>Adı Soyadı</th>
+                <th>Telefon</th>
+                <th>Kuaför Adı</th>
+                <th>Hizmet</th>
+                <th>Tarih</th>
+                <th>Saat</th>
+                <th>İşlem</th>
+            </tr>
+            {% for r in randevular %}
+            <tr>
+                <td>{{ r.isim }} {{ r.soyisim }}</td>
+                <td>{{ r.telefon }}</td>
+                <td>{{ r.kuafor }}</td>
+                <td>{{ r.hizmet }}</td>
+                <td>
+                    {% set t = r.tarih.strip() %}
+                    {% if t|length == 10 and '-' in t %}
+                        {{ t[8:10] }}-{{ t[5:7] }}-{{ t[0:4] }}
+                    {% else %}
+                        {{ t }}
+                    {% endif %}
+                </td>
+                <td>{{ r.saat }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('randevu_iptal') }}" style="margin:0;">
+                        <input type="hidden" name="tarih" value="{{ r.tarih }}">
+                        <input type="hidden" name="saat" value="{{ r.saat }}">
+                        <input type="hidden" name="kuafor" value="{{ r.kuafor }}">
+                        <input type="hidden" name="hizmet" value="{{ r.hizmet }}">
+                        <input type="hidden" name="isim" value="{{ r.isim }}">
+                        <input type="hidden" name="soyisim" value="{{ r.soyisim }}">
+                        <input type="hidden" name="telefon" value="{{ r.telefon }}">
+                        <button type="submit" onclick="return confirm('Randevuyu iptal etmek istediğinize emin misiniz?');" style="background:#ff5252;color:#fff;border:none;padding:0.5rem 1rem;border-radius:6px;cursor:pointer;">İptal Et</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <div class="no-randevu">Henüz bir randevunuz yok.</div>
+        {% endif %}
+        <a class="back-link" href="{{ url_for('home') }}">&#8592; Ana Sayfa</a>
+    </div>
+    <script>
+        function openDrawer() {
+            document.getElementById("drawer").style.width = "220px";
+        }
+        function closeDrawer() {
+            document.getElementById("drawer").style.width = "0";
+        }
+    </script>
+</body>
+</html>

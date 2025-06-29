@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Yap</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #f8e1f4 0%, #f0f4ff 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .login-box {
+            background: rgba(255,255,255,0.97);
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+            min-width: 340px;
+            max-width: 380px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        .login-box h2 {
+            text-align: center;
+            color: #e94f8b;
+            font-size: 2.1rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Segoe Script', cursive, sans-serif;
+            letter-spacing: 1px;
+        }
+        .login-box input {
+            width: 100%;
+            margin-bottom: 1.1rem;
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: 1px solid #bdbdbd;
+            font-size: 1.08rem;
+            background: #fafbff;
+            transition: border 0.2s;
+        }
+        .login-box input:focus {
+            border: 1.5px solid #e94f8b;
+            outline: none;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(90deg, #e94f8b 0%, #66a6ff 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.2rem;
+            transition: background 0.2s;
+        }
+        .login-box button:hover {
+            background: linear-gradient(90deg, #66a6ff 0%, #e94f8b 100%);
+            color: #222;
+        }
+        .mesaj {
+            color: #e94f8b;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 1.2rem;
+        }
+        .register-link a {
+            color: #e94f8b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        /* Background image style */
+        .bg-img {
+            position: absolute;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            object-fit: cover;
+            opacity: 0.13;
+            pointer-events: none;
+        }
+        @media (max-width: 500px) {
+            .login-box { min-width: 90vw; padding: 1.2rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <img src="https://static8.depositphotos.com/1008939/1890/i/950/depositphotos_189030790-stock-photo-hairdresser-tools-pink-background-top.jpg" class="bg-img" alt="kuaför arka plan">
+    <div class="login-box">
+        <h2>Giriş Yap</h2>
+        {% if mesaj %}
+            <div class="mesaj">{{ mesaj }}</div>
+        {% endif %}
+        <form method="post">
+            <input type="email" name="email" placeholder="E-posta" required>
+            <input type="password" name="password" placeholder="Şifre" required>
+            <button type="submit">Giriş Yap</button>
+        </form>
+        <div class="register-link">
+            <a href="{{ url_for('register') }}">Hesabınız yok mu? Kayıt Olun</a>
+        </div>
+    </div>
+</body>
+</html>
